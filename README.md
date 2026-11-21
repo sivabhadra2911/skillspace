@@ -4,7 +4,7 @@ Skill Space is a freelancer and recruiter workspace for jobs, applications, plan
 
 ## Database already connected
 
-The existing DBeaver **neondb** connection now contains a separate `skillspace` schema with eight application tables. The three pre-existing tables in `public` were left in place. Refresh the connection in DBeaver and expand **Schemas → skillspace → Tables** to inspect them.
+Neon now has a dedicated **skillspace** database with eight application tables in its `public` schema. The existing **neondb** database and its three unrelated tables were left in place. To browse Skill Space in DBeaver, duplicate the existing Neon connection, change its database name from `neondb` to `skillspace`, and expand **Schemas → public → Tables**.
 
 This workspace has an ignored local `.env` for the Neon connection. The database password and session secret are not committed. The API uses verified TLS when connecting to Neon.
 
@@ -15,6 +15,7 @@ Run `npm run api` and `npm run dev` in separate terminals, then open `http://loc
 - Visitors can explore a labeled demo, search and filter jobs, save roles locally, add demo tasks, and draft posts.
 - Members can publish jobs, apply, track applications, manage tasks and events, edit profiles, post to the community, and message members.
 - Recruiters can review received applications and change their status.
+- Light and dark themes follow the device setting by default, with a top-bar toggle that remembers the chosen theme.
 - The API checks record ownership, hashes passwords, signs sessions, and limits authentication attempts.
 
 Demo tasks, posts, and saved roles are stored in the browser. Signed-in records use Neon through the Node API.
@@ -32,5 +33,5 @@ The connection template is in [.env.example](.env.example). The actual `.env` is
 - [App.tsx](src/App.tsx): responsive workspace
 - [api.ts](src/lib/api.ts): frontend API client
 - [index.js](server/index.js): authenticated Node API
-- [schema.sql](server/schema.sql): isolated Neon schema
+- [schema.sql](server/schema.sql): tables in the dedicated Neon database
 - [deploy.yml](.github/workflows/deploy.yml): GitHub Pages build

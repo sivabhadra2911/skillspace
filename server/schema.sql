@@ -1,6 +1,3 @@
-create schema if not exists skillspace;
-set search_path to skillspace, public;
-
 create table if not exists users (
   id uuid primary key default gen_random_uuid(),
   email text not null unique,

@@ -2136,3 +2136,297 @@ a {
   font-size: 10px;
   font-weight: 700;
 }
+
+/* Persistent dark theme */
+.theme-toggle {
+  border-radius: 8px;
+}
+.theme-toggle:hover {
+  background: #f0edff;
+  color: #6949df;
+}
+:where(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid #9073f4;
+  outline-offset: 2px;
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  color: #eef0fb;
+  background: #10121f;
+}
+html[data-theme="dark"] body,
+html[data-theme="dark"] .app-shell,
+html[data-theme="dark"] .main-area {
+  background: #10121f;
+  color: #eef0fb;
+}
+html[data-theme="dark"] .sidebar,
+html[data-theme="dark"] .topbar,
+html[data-theme="dark"] .panel,
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .search-panel,
+html[data-theme="dark"] .job-card,
+html[data-theme="dark"] .application-list,
+html[data-theme="dark"] .post-card,
+html[data-theme="dark"] .messages-layout,
+html[data-theme="dark"] .empty-state,
+html[data-theme="dark"] .modal {
+  background: #191d2e;
+  border-color: #30364d;
+  color: #eef0fb;
+  box-shadow: none;
+}
+html[data-theme="dark"] .sidebar {
+  border-right-color: #30364d;
+}
+html[data-theme="dark"] .topbar {
+  border-bottom-color: #30364d;
+}
+html[data-theme="dark"] .brand,
+html[data-theme="dark"] .breadcrumb strong,
+html[data-theme="dark"] .user-chip,
+html[data-theme="dark"] .workspace-pill,
+html[data-theme="dark"] .page-heading h1,
+html[data-theme="dark"] .panel-head h3,
+html[data-theme="dark"] .panel > h3,
+html[data-theme="dark"] .stat-card > strong,
+html[data-theme="dark"] .mini-job,
+html[data-theme="dark"] .mini-job-right strong,
+html[data-theme="dark"] .results-heading strong,
+html[data-theme="dark"] .job-card h3,
+html[data-theme="dark"] .job-card-footer strong,
+html[data-theme="dark"] .application-row strong,
+html[data-theme="dark"] .calendar-head h3,
+html[data-theme="dark"] .event-line strong,
+html[data-theme="dark"] .post-card h3,
+html[data-theme="dark"] .post-top strong,
+html[data-theme="dark"] .community-numbers strong,
+html[data-theme="dark"] .people-list h3,
+html[data-theme="dark"] .person strong,
+html[data-theme="dark"] .chat-header strong,
+html[data-theme="dark"] .chat-placeholder h3,
+html[data-theme="dark"] .profile-summary h3,
+html[data-theme="dark"] .modal h2,
+html[data-theme="dark"] .modal h4,
+html[data-theme="dark"] .insight-copy strong,
+html[data-theme="dark"] .teaser-post strong,
+html[data-theme="dark"] .task-row strong,
+html[data-theme="dark"] .planner-task strong {
+  color: #f3f2ff;
+}
+html[data-theme="dark"] .workspace-pill {
+  background: #20243a;
+  border-color: #343950;
+  box-shadow: none;
+}
+html[data-theme="dark"] .workspace-icon,
+html[data-theme="dark"] .nav-item.active,
+html[data-theme="dark"] .nav-item:hover,
+html[data-theme="dark"] .circle-add,
+html[data-theme="dark"] .job-card-footer button,
+html[data-theme="dark"] .person:hover,
+html[data-theme="dark"] .person.active,
+html[data-theme="dark"] .theme-toggle:hover {
+  background: #2d2852;
+  color: #c1adff;
+}
+html[data-theme="dark"] .nav-item {
+  color: #b4bad0;
+}
+html[data-theme="dark"] .nav-item.active,
+html[data-theme="dark"] .nav-item:hover {
+  color: #cdbfff;
+}
+html[data-theme="dark"] .nav-item em,
+html[data-theme="dark"] .count-badge {
+  background: #413375;
+  color: #d7caff;
+}
+html[data-theme="dark"] .upgrade-card {
+  background: #262343;
+}
+html[data-theme="dark"] .upgrade-card:before {
+  background: #373064;
+}
+html[data-theme="dark"] .upgrade-card strong,
+html[data-theme="dark"] .community-intro h3,
+html[data-theme="dark"] .tip-card h4 {
+  color: #f0ecff;
+}
+html[data-theme="dark"] .upgrade-card p,
+html[data-theme="dark"] .community-intro p,
+html[data-theme="dark"] .tip-card p {
+  color: #b7b4ce;
+}
+html[data-theme="dark"] .demo-banner {
+  background: #262247;
+  color: #d4c8ff;
+}
+html[data-theme="dark"] .demo-banner button,
+html[data-theme="dark"] .text-link,
+html[data-theme="dark"] .panel-footer-link,
+html[data-theme="dark"] .post-bottom button {
+  color: #c6b2ff;
+}
+html[data-theme="dark"] .secondary-button,
+html[data-theme="dark"] .muted-chip,
+html[data-theme="dark"] .tag-row span,
+html[data-theme="dark"] .topic-chip,
+html[data-theme="dark"] .profile-skills small,
+html[data-theme="dark"] .job-modal-tags span {
+  background: #292d45;
+  border-color: #414660;
+  color: #d6c9ff;
+}
+html[data-theme="dark"] .stat-icon.purple,
+html[data-theme="dark"] .modal-icon {
+  background: #342c59;
+  color: #c4b0ff;
+}
+html[data-theme="dark"] .stat-icon.peach,
+html[data-theme="dark"] .modal-icon.peach {
+  background: #49322e;
+  color: #ffc197;
+}
+html[data-theme="dark"] .stat-icon.blue,
+html[data-theme="dark"] .modal-icon.blue {
+  background: #253c57;
+  color: #a9d4ff;
+}
+html[data-theme="dark"] .stat-icon.green {
+  background: #294538;
+  color: #98e3b6;
+}
+html[data-theme="dark"] .mini-job,
+html[data-theme="dark"] .task-row,
+html[data-theme="dark"] .teaser-post,
+html[data-theme="dark"] .planner-task,
+html[data-theme="dark"] .application-row {
+  border-top-color: #30364d;
+}
+html[data-theme="dark"] .panel-footer-link,
+html[data-theme="dark"] .job-card-footer,
+html[data-theme="dark"] .post-bottom,
+html[data-theme="dark"] .community-numbers,
+html[data-theme="dark"] .calendar-detail,
+html[data-theme="dark"] .chat-header,
+html[data-theme="dark"] .chat-compose,
+html[data-theme="dark"] .modal-actions {
+  border-color: #30364d;
+}
+html[data-theme="dark"] .application-row {
+  border-bottom-color: #30364d;
+}
+html[data-theme="dark"] .search-separator {
+  background: #3a4057;
+}
+html[data-theme="dark"] .search-input input,
+html[data-theme="dark"] .search-panel select,
+html[data-theme="dark"] .form-grid input,
+html[data-theme="dark"] .form-grid textarea,
+html[data-theme="dark"] .form-grid select,
+html[data-theme="dark"] .chat-compose input,
+html[data-theme="dark"] .status-select {
+  background: #111524;
+  border-color: #394059;
+  color: #f2f1fb;
+}
+html[data-theme="dark"] .search-input input::placeholder,
+html[data-theme="dark"] .form-grid input::placeholder,
+html[data-theme="dark"] .form-grid textarea::placeholder,
+html[data-theme="dark"] .chat-compose input::placeholder {
+  color: #8d94ab;
+}
+html[data-theme="dark"] .form-grid label {
+  color: #d1d3e6;
+}
+html[data-theme="dark"] .form-grid input:focus,
+html[data-theme="dark"] .form-grid textarea:focus,
+html[data-theme="dark"] .form-grid select:focus {
+  border-color: #a18af6;
+  box-shadow: 0 0 0 3px #483879;
+}
+html[data-theme="dark"] .task-check {
+  background: #151a2b;
+  border-color: #737b99;
+}
+html[data-theme="dark"] .planner-task.done .task-check,
+html[data-theme="dark"] .day.selected {
+  background: #8060f1;
+  border-color: #8060f1;
+  color: #fff;
+}
+html[data-theme="dark"] .progress-ring {
+  background: conic-gradient(#a58bff var(--progress), #30364d 0);
+}
+html[data-theme="dark"] .progress-ring > div {
+  background: #191d2e;
+}
+html[data-theme="dark"] .day {
+  color: #c4c9dd;
+}
+html[data-theme="dark"] .day:hover {
+  background: #31304e;
+}
+html[data-theme="dark"] .day.today {
+  color: #cbb8ff;
+}
+html[data-theme="dark"] .day.selected {
+  color: white;
+}
+html[data-theme="dark"] .community-intro {
+  background: #282349;
+}
+html[data-theme="dark"] .community-intro > span {
+  background: #3b3268;
+  color: #d2c1ff;
+}
+html[data-theme="dark"] .tip-card {
+  background: #30291f;
+  color: #e1b98e;
+}
+html[data-theme="dark"] .people-list {
+  border-right-color: #30364d;
+}
+html[data-theme="dark"] .bubble:not(.mine) {
+  background: #2a3048;
+  color: #ecedfa;
+}
+html[data-theme="dark"] .profile-big-avatar,
+html[data-theme="dark"] .avatar,
+html[data-theme="dark"] .post-avatar {
+  background: #3b3750;
+  color: #edddc8;
+}
+html[data-theme="dark"] .modal-close {
+  background: #292e43;
+  color: #c0c3d7;
+}
+html[data-theme="dark"] .job-description {
+  color: #b5b9d0 !important;
+}
+html[data-theme="dark"] .status-pill {
+  background: #293e59;
+  color: #b8d7ff;
+}
+html[data-theme="dark"] .priority.high {
+  background: #4a302d;
+  color: #ffb6a6;
+}
+html[data-theme="dark"] .priority.medium {
+  background: #463b27;
+  color: #f1d493;
+}
+html[data-theme="dark"] .priority.low {
+  background: #254132;
+  color: #a1e1b7;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

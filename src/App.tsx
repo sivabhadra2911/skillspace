@@ -17,12 +17,14 @@ import {
   LogOut,
   MapPin,
   Menu,
+  Moon,
   MessageCircle,
   Plus,
   Search,
   Send,
   ShieldCheck,
   Sparkles,
+  Sun,
   Target,
   TrendingUp,
   UserRound,
@@ -265,6 +267,9 @@ const nav: { page: Page; label: string; icon: typeof LayoutDashboard }[] = [
 ];
 
 function App() {
+  const [theme, setTheme] = useState<"light" | "dark">(() =>
+    document.documentElement.dataset.theme === "dark" ? "dark" : "light",
+  );
   const { user, loading: authLoading, signIn, signUp, signOut } = useAuth();
   const [page, setPage] = useState<Page>(
     () => (location.hash.replace("#/", "") as Page) || "overview",
@@ -345,6 +350,14 @@ function App() {
     {},
   );
 
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+    localStorage.setItem("skillspace_theme", theme);
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? "#10121f" : "#f7f7fa");
+  }, [theme]);
   useEffect(() => {
     const onHash = () =>
       setPage((location.hash.replace("#/", "") as Page) || "overview");
@@ -981,6 +994,25 @@ function App() {
                 year: "numeric",
               })}
             </span>
+            <button
+              className="icon-button theme-toggle"
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              title={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
+              aria-pressed={theme === "dark"}
+              onClick={() =>
+                setTheme((current) => (current === "dark" ? "light" : "dark"))
+              }
+            >
+              {theme === "dark" ? <Sun size={19} /> : <Moon size={19} />}
+            </button>
             <button
               className="icon-button bell-button"
               title="Updates"
