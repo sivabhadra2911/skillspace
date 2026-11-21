@@ -382,8 +382,10 @@ function App() {
             .select("*")
             .order("created_at", { ascending: false }),
         ]);
-        if (alive && !publicJobs.error) setJobs(publicJobs.data || []);
-        if (alive && !publicPosts.error) setPosts(publicPosts.data || []);
+        if (alive && !publicJobs.error && publicJobs.data?.length)
+          setJobs(publicJobs.data);
+        if (alive && !publicPosts.error && publicPosts.data?.length)
+          setPosts(publicPosts.data);
         return;
       }
       setJobs([]);

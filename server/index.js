@@ -9,6 +9,7 @@ import { rateLimit } from "express-rate-limit";
 const app = express();
 const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
+  options: "-c search_path=skillspace,public",
   ssl:
     process.env.DATABASE_SSL === "true"
       ? { rejectUnauthorized: true }

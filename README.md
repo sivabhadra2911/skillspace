@@ -1,40 +1,36 @@
 # Skill Space
 
-Skill Space is a freelancer and recruiter workspace for finding jobs, tracking applications, planning tasks and events, sharing community posts, and messaging other members. The interface has been rebuilt in React. The live data layer is a Node API backed by PostgreSQL; Supabase is no longer used.
+Skill Space is a freelancer and recruiter workspace for jobs, applications, planning, community, and messages. The frontend is React; the API is Node.js; live data is stored in PostgreSQL on Neon.
 
-## What works
+## Database already connected
 
-- Visitors can explore a clearly labeled demo, search and filter roles, save roles in their browser, add demo tasks, and draft community posts.
-- Registered members can publish jobs, apply, track applications, manage tasks and events, edit profiles, post to the community, and message members.
-- Recruiters can view applications received for their jobs and update application status.
-- The API checks ownership on private records, hashes passwords, signs sessions, and limits authentication attempts.
+The existing DBeaver **neondb** connection now contains a separate `skillspace` schema with eight application tables. The three pre-existing tables in `public` were left in place. Refresh the connection in DBeaver and expand **Schemas → skillspace → Tables** to inspect them.
 
-Saved roles are stored in each browser. Demo tasks and posts also remain in that browser only.
+This workspace has an ignored local `.env` for the Neon connection. The database password and session secret are not committed. The API uses verified TLS when connecting to Neon.
 
-## Run locally with PostgreSQL and DBeaver
+Run `npm run api` and `npm run dev` in separate terminals, then open `http://localhost:8080`. The API health check is `http://localhost:4000/api/health`. Run `npm run typecheck` and `npm run build` before publishing. The schema definition is in [schema.sql](server/schema.sql); `npm run db:init` is safe to rerun if the schema needs to be recreated.
 
-DBeaver is the desktop client used to create, browse, and query a PostgreSQL database. PostgreSQL itself must be running. This computer already has a running PostgreSQL 18 service, but its password is needed to create the Skill Space database.
+## Features
 
-1. In DBeaver, connect to local PostgreSQL using your database username and password. Create a database named `skillspace`.
-2. Copy `.env.example` to `.env`. Put your real PostgreSQL password in `DATABASE_URL` and replace `JWT_SECRET` with a long random value. Keep `.env` private.
-3. Run `npm ci`, then `npm run db:init` to create the tables and indexes. You can also open [schema.sql](server/schema.sql) in DBeaver and execute it against the `skillspace` database.
-4. In separate terminals, run `npm run api` and `npm run dev`. The frontend runs at `http://localhost:8080`; the API runs at `http://localhost:4000`.
-5. Check `http://localhost:4000/api/health` for `{"status":"ok"}`. Run `npm run typecheck` and `npm run build` before publishing.
+- Visitors can explore a labeled demo, search and filter jobs, save roles locally, add demo tasks, and draft posts.
+- Members can publish jobs, apply, track applications, manage tasks and events, edit profiles, post to the community, and message members.
+- Recruiters can review received applications and change their status.
+- The API checks record ownership, hashes passwords, signs sessions, and limits authentication attempts.
 
-The API uses `DATABASE_URL`, `JWT_SECRET`, `CORS_ORIGIN`, `DATABASE_SSL`, and `PORT`. The React frontend uses only `VITE_API_URL`. Never put a database password or JWT secret in a `VITE_` variable.
+Demo tasks, posts, and saved roles are stored in the browser. Signed-in records use Neon through the Node API.
 
 ## Hosting
 
-GitHub Pages can host the **React frontend**, but it cannot run the Node API or PostgreSQL. The repository includes a [GitHub Pages workflow](.github/workflows/deploy.yml) that builds the frontend from `main`. In repository Settings → Pages, choose **GitHub Actions** as the publishing source. Set the repository Actions variable `VITE_API_URL` to the public HTTPS URL of the deployed API before publishing the live app. Hash navigation keeps deep links working on Pages.
+GitHub Pages can host the **React frontend**. The [deployment workflow](.github/workflows/deploy.yml) builds it from `main`. In GitHub Settings → Pages, choose **GitHub Actions** as the source.
 
-Host the Node API as a web service (for example, Render) and PostgreSQL as a managed database. DBeaver can connect to that hosted PostgreSQL database using the provider's host, port, username, password, and SSL settings. Configure the API host with `DATABASE_URL`, a strong `JWT_SECRET`, `CORS_ORIGIN=https://sivabhadra2911.github.io`, and `DATABASE_SSL=true` when the database requires SSL. Run `npm run db:init` once against that database, and start the API with `npm run api`.
+The Node API still needs a public host such as Render. Set its private environment variables to the Neon connection URL, a strong `JWT_SECRET`, `DATABASE_SSL=true`, and `CORS_ORIGIN=https://sivabhadra2911.github.io`. Start it with `npm run api`. In GitHub Actions variables, set `VITE_API_URL` to that API's public HTTPS URL. The site will then call the hosted API while the API connects to Neon. Do not put the database password or session secret in any `VITE_` variable.
 
-A PostgreSQL server running only on your laptop is suitable for local development. A public GitHub Pages site needs a publicly reachable API and database that remain online when your laptop is off.
+The connection template is in [.env.example](.env.example). The actual `.env` is local and ignored by Git.
 
 ## Project layout
 
-- [App.tsx](src/App.tsx): responsive workspace interface and interactions
+- [App.tsx](src/App.tsx): responsive workspace
 - [api.ts](src/lib/api.ts): frontend API client
 - [index.js](server/index.js): authenticated Node API
-- [schema.sql](server/schema.sql): PostgreSQL schema
-- [deploy.yml](.github/workflows/deploy.yml): GitHub Pages build and deployment
+- [schema.sql](server/schema.sql): isolated Neon schema
+- [deploy.yml](.github/workflows/deploy.yml): GitHub Pages build
