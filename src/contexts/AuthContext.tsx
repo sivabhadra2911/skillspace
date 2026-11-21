@@ -1,125 +1,90 @@
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+import { request, type ApiUser } from "@/lib/api";
 
-import { createContext, useContext, useEffect, useState } from 'react';
-import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
-
-type AuthContextType = {
-  session: Session | null;
-  user: User | null;
+type AuthContextValue = {
+  user: ApiUser | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: any) => Promise<{
-    error: any | null;
-  }>;
-  signIn: (email: string, password: string) => Promise<{
-    error: any | null;
-  }>;
+  signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (
+    email: string,
+    password: string,
+    data: { full_name: string; user_type: string },
+  ) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 };
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [session, setSession] = useState<Session | null>(null);
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        console.log('Auth state changed:', event, session);
-        setSession(session);
-        setUser(session?.user ?? null);
-      }
-    );
-
-    // THEN check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  const signUp = async (email: string, password: string, userData?: any) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: userData,
-          emailRedirectTo: `${window.location.origin}/auth/callback`,
-        },
-      });
-
-      if (error) {
-        console.error('Sign up error:', error);
-        return { error };
-      }
-
-      return { error: null };
-    } catch (error) {
-      console.error('Sign up exception:', error);
-      return { error };
-    }
+const AuthContext = createContext<AuthContextValue | null>(null);
+function normalizeUser(user: any): ApiUser {
+  return {
+    ...user,
+    user_metadata: { full_name: user.full_name, user_type: user.user_type },
   };
-
+}
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<ApiUser | null>(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if (!localStorage.getItem("skillspace_token")) {
+      setLoading(false);
+      return;
+    }
+    request("/api/auth/me")
+      .then(({ user }) => setUser(normalizeUser(user)))
+      .catch(() => localStorage.removeItem("skillspace_token"))
+      .finally(() => setLoading(false));
+  }, []);
   const signIn = async (email: string, password: string) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const result = await request("/api/auth/signin", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
       });
-
-      if (error) {
-        console.error('Sign in error:', error);
-        return { error };
-      }
-
+      localStorage.setItem("skillspace_token", result.token);
+      setUser(normalizeUser(result.user));
       return { error: null };
     } catch (error) {
-      console.error('Sign in exception:', error);
-      return { error };
+      return { error: error as Error };
     }
   };
-
-  const signOut = async () => {
+  const signUp = async (
+    email: string,
+    password: string,
+    data: { full_name: string; user_type: string },
+  ) => {
     try {
-      await supabase.auth.signOut();
-      toast({
-        title: "Signed out",
-        description: "You have been successfully signed out."
+      const result = await request("/api/auth/signup", {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password,
+          name: data.full_name,
+          role: data.user_type,
+        }),
       });
+      localStorage.setItem("skillspace_token", result.token);
+      setUser(normalizeUser(result.user));
+      return { error: null };
     } catch (error) {
-      console.error('Sign out error:', error);
-      toast({
-        title: "Error signing out",
-        description: "There was a problem signing you out.",
-        variant: "destructive"
-      });
+      return { error: error as Error };
     }
   };
-
-  const value = {
-    session,
-    user,
-    loading,
-    signUp,
-    signIn,
-    signOut,
+  const signOut = async () => {
+    localStorage.removeItem("skillspace_token");
+    setUser(null);
   };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-};
-
-export const useAuth = () => {
+  return (
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+export function useAuth() {
   const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
-};
+}

@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local secrets and temporary visual previews
+.env
+.env.*
+!.env.example
+.chrome-preview/
+preview.cjs
+preview-*.png
+
+tmp/
+test-*.cjs
